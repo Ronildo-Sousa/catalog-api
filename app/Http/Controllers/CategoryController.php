@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTransferObjects\CategoryDTO;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
 use App\Services\CategoryService;
@@ -12,7 +13,8 @@ class CategoryController extends Controller
 {
     public function __construct(
         private CategoryService $service,
-    ){}
+    ) {
+    }
 
     public function index()
     {
@@ -39,9 +41,12 @@ class CategoryController extends Controller
         }
     }
 
-    public function show(string $id)
+    public function show(Category $category)
     {
-        //
+        return response()->json(
+            $this->service->show($category),
+            Response::HTTP_OK
+        );
     }
 
     public function update(CategoryRequest $request, Category $category)
@@ -49,7 +54,7 @@ class CategoryController extends Controller
         try {
             $category = $this->service->update($request->validated(), $category);
             if (!$category) {
-                return response()->json(null, Response::HTTP_FORBIDDEN);   
+                return response()->json(null, Response::HTTP_FORBIDDEN);
             }
 
             return response()->json(
@@ -69,7 +74,7 @@ class CategoryController extends Controller
         try {
             $deleted = $this->service->delete($category);
             if (!$deleted) {
-                return response()->json(null, Response::HTTP_FORBIDDEN);    
+                return response()->json(null, Response::HTTP_FORBIDDEN);
             }
 
             return response()->json(null, Response::HTTP_NO_CONTENT);

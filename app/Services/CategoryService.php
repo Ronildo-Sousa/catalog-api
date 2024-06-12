@@ -18,6 +18,11 @@ class CategoryService
 
         return CategoryDTO::from($category->toArray());
     }
+
+    public function show(Category $category): CategoryDTO
+    {
+        return CategoryDTO::from($category->toArray());
+    }
     
     public function update(array $paylod, Category $category): ?CategoryDTO
     {
