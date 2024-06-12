@@ -51,6 +51,18 @@ class CategoryController extends Controller
 
     public function destroy(Category $category)
     {
-        //
+        try {
+            $deleted = $this->service->delete($category);
+            if (!$deleted) {
+                return response()->json(null, Response::HTTP_FORBIDDEN);    
+            }
+
+            return response()->json(null, Response::HTTP_NO_CONTENT);
+        } catch (Exception $e) {
+            return response()->json(
+                ['message' => $e->getMessage()],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 }
