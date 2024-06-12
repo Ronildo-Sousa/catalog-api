@@ -23,7 +23,7 @@ class CreateTest extends TestCase
         ];
 
         $response = $this->actingAs($owner)
-            ->post(route('categories.insert'), $payload);
+            ->postJson(route('categories.store'), $payload);
 
         $response->assertStatus(Response::HTTP_CREATED);
 
@@ -43,7 +43,7 @@ class CreateTest extends TestCase
         ];
 
         $response = $this->actingAs($owner)
-            ->post(route('categories.insert'), $payload);
+            ->postJson(route('categories.store'), $payload);
 
         $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY);
     }
