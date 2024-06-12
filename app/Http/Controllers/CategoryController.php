@@ -18,7 +18,10 @@ class CategoryController extends Controller
 
     public function index()
     {
-        //
+        return response()->json(
+            $this->service->list(),
+            Response::HTTP_OK
+        );
     }
 
     public function store(CategoryRequest $request)

@@ -8,6 +8,15 @@ use App\Models\User;
 
 class CategoryService
 {
+    public const CATEGORIES_PER_PAGE = 5;
+
+    public function list(int $per_page = self::CATEGORIES_PER_PAGE)
+    {
+        return Category::query()
+            ->where('owner_id', '=', auth()->id())
+            ->paginate($per_page);
+    }
+
     public function create(array $paylod): CategoryDTO
     {
         /** @var User $owner */
