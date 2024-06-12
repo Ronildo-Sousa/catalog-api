@@ -22,7 +22,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         try {
-            $category = $this->service->create($request);
+            $category = $this->service->create($request->validated());
 
             return response()->json(
                 [
@@ -46,7 +46,22 @@ class CategoryController extends Controller
 
     public function update(CategoryRequest $request, Category $category)
     {
-        //
+        try {
+            $category = $this->service->update($request->validated(), $category);
+            if (!$category) {
+                return response()->json(null, Response::HTTP_FORBIDDEN);   
+            }
+
+            return response()->json(
+                ['message' => 'category updated successfully'],
+                Response::HTTP_NO_CONTENT
+            );
+        } catch (Exception  $e) {
+            return response()->json(
+                ['message' => $e->getMessage()],
+                Response::HTTP_INTERNAL_SERVER_ERROR
+            );
+        }
     }
 
     public function destroy(Category $category)

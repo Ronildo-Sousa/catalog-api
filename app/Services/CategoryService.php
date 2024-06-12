@@ -5,19 +5,29 @@ namespace App\Services;
 use App\DataTransferObjects\CategoryDTO;
 use App\Models\Category;
 use App\Models\User;
-use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class CategoryService
 {
-    public function create(Request $request): CategoryDTO
+    public function create(array $paylod): CategoryDTO
     {
         /** @var User $owner */
         $owner = auth()->user();
         $category = $owner->categories()->create(
-            CategoryDTO::from($request)->toArray()
+            CategoryDTO::from($paylod)->toArray()
         );
 
+        return CategoryDTO::from($category->toArray());
+    }
+    
+    public function update(array $paylod, Category $category): ?CategoryDTO
+    {
+        /** @var User $user */
+        $user = auth()->user();
+        if ($user->cannot('update', $category)) {
+            return null;
+        }
+        
+        $category->update($paylod);
         return CategoryDTO::from($category->toArray());
     }
 
