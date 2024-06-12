@@ -8,12 +8,14 @@ use Illuminate\Http\Request;
 
 class CategoryService
 {
-    public function create(Request $request)
+    public function create(Request $request): CategoryDTO
     {   
         /** @var User $owner */
         $owner = auth()->user();
-        $owner->categories()->create(
+        $category = $owner->categories()->create(
             CategoryDTO::from($request)->toArray()
         );
+        
+        return CategoryDTO::from($category->toArray());
     }
 }

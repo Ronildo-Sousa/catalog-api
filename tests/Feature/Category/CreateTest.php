@@ -4,7 +4,6 @@ namespace Tests\Feature\Category;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use PHPUnit\Framework\Attributes\Test;
 use Symfony\Component\HttpFoundation\Response;
 use Tests\TestCase;
@@ -25,7 +24,8 @@ class CreateTest extends TestCase
         $response = $this->actingAs($owner)
             ->postJson(route('categories.store'), $payload);
 
-        $response->assertStatus(Response::HTTP_CREATED);
+        $response->assertStatus(Response::HTTP_CREATED)
+            ->assertJsonStructure(['message', 'category']);
 
         $this->assertDatabaseHas('categories', array_merge(
             $payload,

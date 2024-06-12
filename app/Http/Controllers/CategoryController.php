@@ -22,10 +22,13 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         try {
-            $this->service->create($request);
+            $category = $this->service->create($request);
 
             return response()->json(
-                ['message' => 'category created successfully'],
+                [
+                    'message' => 'category created successfully',
+                    'category' => $category,
+                ],
                 Response::HTTP_CREATED
             );
         } catch (Exception  $e) {
