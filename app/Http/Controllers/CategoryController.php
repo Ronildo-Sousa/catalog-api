@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
-use App\Models\User;
+use App\Services\CategoryService;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
 class CategoryController extends Controller
 {
+    public function __construct(
+        private CategoryService $service,
+    ){}
+
     public function index()
     {
         //
@@ -18,9 +22,7 @@ class CategoryController extends Controller
     public function store(CategoryRequest $request)
     {
         try {
-            /** @var User $owner */
-            $owner = auth()->user();
-            $owner->categories()->create($request->validated());
+            $this->service->create($request);
 
             return response()->json(
                 ['message' => 'category created successfully'],
