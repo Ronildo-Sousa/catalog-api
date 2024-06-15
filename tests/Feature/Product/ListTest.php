@@ -2,8 +2,6 @@
 
 namespace Tests\Feature\Product;
 
-use App\Models\Category;
-use App\Models\Product;
 use App\Models\User;
 use Database\Factories\ProductFactory;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -25,5 +23,6 @@ class ListTest extends TestCase
             ->getJson(route('products.index'));
 
         $response->assertStatus(Response::HTTP_OK);
+        $this->assertEquals(3, $response->collect()->count());
     }
 }
